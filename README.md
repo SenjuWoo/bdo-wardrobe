@@ -13,9 +13,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ShugokiFable/bdo-wardrobe/actions/workflows/ci.yml"><img src="https://github.com/ShugokiFable/bdo-wardrobe/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/SenjuWoo/bdo-wardrobe/actions/workflows/ci.yml"><img src="https://github.com/SenjuWoo/bdo-wardrobe/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-c9a227?labelColor=0c0f12" alt="MIT License"></a>
-  <a href="https://github.com/ShugokiFable/bdo-wardrobe/releases/tag/v1.0.0"><img src="https://img.shields.io/badge/release-v1.0.0-d4af37?labelColor=0c0f12" alt="v1.0.0"></a>
+  <a href="https://github.com/SenjuWoo/bdo-wardrobe/releases/tag/v1.0.0"><img src="https://img.shields.io/badge/release-v1.0.0-d4af37?labelColor=0c0f12" alt="v1.0.0"></a>
 </p>
 
 <p align="center">
@@ -58,7 +58,7 @@
 Node.js 22 or newer.
 
 ```powershell
-git clone https://github.com/ShugokiFable/bdo-wardrobe.git
+git clone https://github.com/SenjuWoo/bdo-wardrobe.git
 cd bdo-wardrobe
 node server.mjs
 ```
@@ -67,7 +67,7 @@ Open [http://127.0.0.1:7861](http://127.0.0.1:7861). No build step.
 
 **Windows desktop:** double-click `BDO Wardrobe UI.exe`. `launcher.ps1` provisions a private Node 22.16.0 runtime (SHA-256 verified) and a WebView2 shell into `%LOCALAPPDATA%\BDO Wardrobe`, so it never touches your system Node.
 
-A packed zip also ships on [Releases](https://github.com/ShugokiFable/bdo-wardrobe/releases/tag/v1.0.0).
+A packed zip also ships on [Releases](https://github.com/SenjuWoo/bdo-wardrobe/releases/tag/v1.0.0).
 
 ## How images work
 
