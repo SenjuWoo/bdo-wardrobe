@@ -15,7 +15,7 @@
 <p align="center">
   <a href="https://github.com/SenjuWoo/bdo-wardrobe/actions/workflows/ci.yml"><img src="https://github.com/SenjuWoo/bdo-wardrobe/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-c9a227?labelColor=0c0f12" alt="MIT License"></a>
-  <a href="https://github.com/SenjuWoo/bdo-wardrobe/releases/tag/v1.0.0"><img src="https://img.shields.io/badge/release-v1.0.0-d4af37?labelColor=0c0f12" alt="v1.0.0"></a>
+  <a href="https://github.com/SenjuWoo/bdo-wardrobe/releases/latest"><img src="https://img.shields.io/github/v/release/SenjuWoo/bdo-wardrobe?label=release&color=d4af37" alt="latest release"></a>
 </p>
 
 <p align="center">
