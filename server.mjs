@@ -85,7 +85,7 @@ const server = createServer(async (req, res) => {
       return json(res, 403, { ok: false, error: 'Forbidden: request did not come from this app' });
     }
 
-    if (url.pathname === '/api/health') return json(res, 200, { ok: true, app: 'bdo-wardrobe', version: '1.0.0' });
+    if (url.pathname === '/api/health') return json(res, 200, { ok: true, app: 'bdo-wardrobe', version: '1.0.1' });
 
     if (url.pathname === '/api/catalog') {
       const [cat, imgs] = await Promise.all([loadCatalog(), loadImagesState()]);

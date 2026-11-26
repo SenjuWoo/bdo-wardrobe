@@ -191,12 +191,12 @@ Verified in this tree:
 - real UI screenshots under `docs/` and `docs/presentation/`, taken from the app served locally
 - CI workflow `.github/workflows/ci.yml`
 - the 390x844 phone layout and the request guard, both covered by `scripts/verify.mjs`
-- latest GitHub release **v1.0.0**
+- latest GitHub release **v1.0.1**
 
 Not claimed:
 
 - affiliation with Pearl Abyss
-- that `package.json` version `2.0.0` is a GitHub release (it is not; v1.0.0 is the latest tag)
+- that `package.json` version `2.0.0` is a GitHub release (it is not; v1.0.1 is the latest tag)
 - that every class has a unique official render for every outfit (fallbacks and missing images are labelled on purpose)
 
 ## Data sources and credits

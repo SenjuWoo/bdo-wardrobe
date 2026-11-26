@@ -4,7 +4,10 @@ All notable changes to BDO Wardrobe. Versions follow the GitHub release tags.
 
 ## [Unreleased]
 
-These fixes change shipped files; they reach desktop users with the next release zip.
+## [1.0.1] - 2026-11-26
+
+Patch release: the desktop zip on GitHub Releases carries these fixes. `/api/health`
+now reports `1.0.1`.
 
 ### Fixed
 - **Security:** `POST /api/crawl` accepted requests from any web page open in the
