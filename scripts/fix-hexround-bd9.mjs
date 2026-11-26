@@ -3,7 +3,9 @@
 // 2) bd9-outfit-set -> REMOVE wrong image (tiny-thumb product has no usable
 //    render) so server sibling-fallback (Archer, gender-matched) takes over.
 import { readFileSync, writeFileSync, copyFileSync, existsSync, statSync } from 'node:fs';
-const RES = 'Z:/Backup/Ai Apps/Apps/BDO-Wardrobe/resources';
+// Pass the packaged app's resources folder: node scripts/fix-hexround-bd9.mjs <resources>
+const RES = process.argv[2] || process.env.BDO_WARDROBE_RESOURCES;
+if (!RES) throw new Error('usage: node scripts/fix-hexround-bd9.mjs <path to resources folder>');
 const st = JSON.parse(readFileSync(`${RES}/data/images.json`, 'utf8'));
 st.images ??= {}; st.errors ??= {};
 

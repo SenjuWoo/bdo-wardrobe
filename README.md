@@ -1,57 +1,50 @@
-<p align="center">
-  <img src="docs/images/logo.svg" width="72" height="72" alt="BDO Wardrobe mark">
-</p>
+<div align="center">
 
-<h1 align="center">BDO Wardrobe</h1>
+![BDO Wardrobe: a gold pentagon mark on a dark panel, with the tagline 'A gallery-first outfit viewer for Black Desert Online: 4,343 outfits, 32 classes, honest image badges.'](docs/presentation/hero.png)
 
-<p align="center"><strong>A gallery-first outfit viewer for Black Desert Online.</strong></p>
+[![CI](https://github.com/SenjuWoo/bdo-wardrobe/actions/workflows/ci.yml/badge.svg)](https://github.com/SenjuWoo/bdo-wardrobe/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/SenjuWoo/bdo-wardrobe?color=d4a94e&labelColor=0d0b08)](https://github.com/SenjuWoo/bdo-wardrobe/releases/latest)
+[![Node](https://img.shields.io/badge/node-22%2B-e8c87e?labelColor=0d0b08)](package.json)
+[![Dependencies](https://img.shields.io/badge/runtime%20deps-none-9c8f76?labelColor=0d0b08)](package.json)
+[![License: MIT](https://img.shields.io/badge/license-MIT-c9a227?labelColor=0d0b08)](LICENSE)
 
-<p align="center">
-  Browse <strong>4,343 outfits across 32 classes and 11 outfit boxes</strong>, with honest<br>
-  image-quality badges, instant search, favorites / owned / wishlist tracking,<br>
-  outfit-box value views, side-by-side comparison, and a shareable wardrobe export.
-</p>
+**[Quick start](#quick-start)** · **[Views](#views)** · **[How images work](#how-images-work)** · **[Verification](#verification)** · **[How it works](#how-it-works)** · **[Changelog](CHANGELOG.md)**
 
-<p align="center">
-  <a href="https://github.com/SenjuWoo/bdo-wardrobe/actions/workflows/ci.yml"><img src="https://github.com/SenjuWoo/bdo-wardrobe/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-c9a227?labelColor=0c0f12" alt="MIT License"></a>
-  <a href="https://github.com/SenjuWoo/bdo-wardrobe/releases/latest"><img src="https://img.shields.io/github/v/release/SenjuWoo/bdo-wardrobe?label=release&color=d4af37" alt="latest release"></a>
-</p>
+</div>
 
-<p align="center">
-  <a href="#quick-start">Quick start</a>
-  ·
-  <a href="#how-images-work">How images work</a>
-  ·
-  <a href="#verification">Verification</a>
-  ·
-  <a href="#honest-status">Honest status</a>
-</p>
-
-<p align="center">
-  <img src="docs/screenshot-grid.png" alt="BDO Wardrobe gallery: Agent outfits with Official, HQ, and FALLBACK badges" width="100%">
-</p>
+BDO Wardrobe is a local, gallery-first viewer for the **Black Desert Online** Pearl Shop
+wardrobe. It puts **4,343 outfits across 32 classes and 11 outfit boxes** on one
+searchable wall, with an image badge on every card that says what the picture really is:
+an official render, a measured high-resolution shot, an upscaled thumbnail, a render
+borrowed from a sibling class, or nothing at all. Mark what you own, what you want and
+what you love, compare up to four outfits side by side, and export your wardrobe as JSON. It
+runs on plain Node 22 and vanilla JS, with no install step and no network needed once
+cloned.
 
 ## What you get
 
-- **4,343 outfits** — the full Pearl Shop catalog in this tree: every class, every box, including the Agent class launch roster
-- **Honest badges, never faked** — every preview is labeled by what it actually is: `Official` / `HQ` / `Standard` / `Upscaled` / `Fallback` / `Missing`, derived from measured pixel dimensions plus provenance
-- **Sibling fallbacks that admit it** — if a class has no render for an outfit (and one exists in-game), the app borrows the closest gender-matched sibling render and labels it `FALLBACK: <Class>`. Berserker and Shai never borrow or lend — their frames would misrepresent any outfit
-- **Instant search and filters** — debounced full-text search over 4,343 cards; filter by class, box, rarity, and image quality
-- **Lightbox with metadata** — rarity, provider, source page link, outfit boxes, resolution
-- **My Wardrobe** — mark outfits Favorite / Owned / Wishlist, persisted locally; export/import your collection as JSON
-- **Compare view** — put two outfits side by side
-- **Zero runtime dependencies** — plain Node 22 + vanilla JS. No `npm install` to run the gallery.
+- **4,343 outfits**, the full Pearl Shop catalog in this tree: every class and every box, including the Agent class launch roster.
+- **Honest badges, never faked.** Every preview is labelled `Official`, `HQ`, `Standard`, `Upscaled`, `Fallback` or `Missing`, derived from measured pixel dimensions plus provenance.
+- **Sibling fallbacks that admit it.** If a class has no render for an outfit (and one exists in game), the app borrows the closest gender-matched sibling render and labels it `FALLBACK: <Class>`. Berserker and Shai never borrow or lend; their frames would misrepresent any outfit.
+- **Instant search and filters.** Debounced full-text search over 4,343 cards; filter by class, box, rarity and image quality; sort by class, name, best images or largest images.
+- **Lightbox with metadata.** Rarity, provider, source page link, outfit boxes and resolution, with arrow-key navigation.
+- **My Wardrobe.** Mark outfits Favorite, Owned or Wishlist, kept in the browser's local storage; export or import your collection as JSON.
+- **Compare view.** Up to four outfits side by side.
+- **Zero runtime dependencies.** `node server.mjs` and you are running.
 
-<p align="center">
-  <img src="docs/screenshot-lightbox.png" alt="Lightbox for Agent Hexround Reaper: official 3840×2160 render with metadata and wardrobe actions" width="100%">
-</p>
+![BDO Wardrobe in a desktop browser at 1600x1000: the gallery wall with the class, box, rarity and image-quality filters on the left; Agent outfits labelled OFFICIAL, BD9 Outfit Set labelled FALLBACK: ARCHER, and Academia labelled HQ](docs/presentation/screenshot-desktop-gallery.png)
 
-<p align="center"><sub>Every card tells the truth about its own picture — including borrowed ones.</sub></p>
+![The lightbox for BD9 Outfit Set: a 2560x1440 render borrowed from the Archer version, labelled FALLBACK: ARCHER with the note that no Agent render has been published yet, plus rarity, provider and the Favorite, Owned, Wishlist and Compare buttons](docs/presentation/screenshot-desktop-lightbox.png)
 
-<p align="center">
-  <img src="docs/screenshot-fallback.png" alt="Primavera search: Berserker has no source image; Hashashin shows FALLBACK: CORSAIR" width="100%">
-</p>
+<details>
+<summary>On a phone-sized viewport (390x844)</summary>
+
+![BDO Wardrobe at a 390x844 phone viewport: left, the top of the page with the class chips and filters stacked above the gallery and the navigation running off the right edge; right, the single-column card list further down, starting with BD9 Outfit Set labelled FALLBACK: ARCHER](docs/presentation/screenshot-mobile.png)
+
+The layout was built for a desktop window. On a phone the filters stack above the
+cards and the top navigation is wider than the screen.
+
+</details>
 
 ## Quick start
 
@@ -63,15 +56,45 @@ cd bdo-wardrobe
 node server.mjs
 ```
 
-Open [http://127.0.0.1:7861](http://127.0.0.1:7861). No build step.
+Open [http://127.0.0.1:7861](http://127.0.0.1:7861). No build step. `HOST` and `PORT`
+override the defaults (`127.0.0.1`, `7861`).
 
-**Windows desktop:** double-click `BDO Wardrobe UI.exe`. `launcher.ps1` provisions a private Node 22.16.0 runtime (SHA-256 verified) and a WebView2 shell into `%LOCALAPPDATA%\BDO Wardrobe`, so it never touches your system Node.
+**Windows desktop:** double-click `BDO Wardrobe UI.exe`. `launcher.ps1` provisions a
+private Node 22.16.0 runtime (SHA-256 verified) and a WebView2 shell into
+`%LOCALAPPDATA%\BDO Wardrobe`, so it never touches your system Node.
 
-A packed zip also ships on [Releases](https://github.com/SenjuWoo/bdo-wardrobe/releases/tag/v1.0.0).
+A packed zip also ships on [Releases](https://github.com/SenjuWoo/bdo-wardrobe/releases/latest).
+
+## Views
+
+| View | What it shows |
+| --- | --- |
+| **Gallery** | Every outfit as a card, with search, class / box / rarity / image-quality filters and sorting |
+| **Outfit Boxes** | Per-box outfit counts, including nested choices marked as not in the catalog |
+| **Classes** | Outfit count and image coverage per class |
+| **Compare** | Up to four outfits side by side |
+| **My Wardrobe** | Your Favorite / Owned / Wishlist marks, with JSON export and import |
+| **Studio** | Image library coverage, unresolved outfits, catalog JSON export and crawl controls |
+
+<p align="center">
+  <img src="docs/screenshot-fallback.png" alt="Primavera search: Berserker has no source image; Hashashin shows FALLBACK: CORSAIR" width="100%">
+</p>
+
+<p align="center"><sub>Every card tells the truth about its own picture, including borrowed ones.</sub></p>
+
+<p align="center">
+  <img src="docs/screenshot-boxes.png" alt="Outfit Boxes view with honest per-box counts, including nested choices marked not in catalog" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/screenshot-compare.png" alt="Side-by-side compare view for two outfits" width="100%">
+</p>
 
 ## How images work
 
-Previews live in `public/assets/images/` and are indexed by `data/images.json` (`{id → file, width, height, provider, sourceUrl}`). The catalog is `data/catalog.json` (4,343 outfits, 32 classes, 11 boxes). Both ship in the repo so the app works offline.
+Previews live in `public/assets/images/` and are indexed by `data/images.json`
+(`{id → file, width, height, provider, sourceUrl}`). The catalog is `data/catalog.json`
+(4,343 outfits, 32 classes, 11 boxes). Both ship in the repo so the app works offline.
 
 Quality tiers are computed from **measured facts only**:
 
@@ -86,17 +109,52 @@ Quality tiers are computed from **measured facts only**:
 
 This tree indexes **4,339** images for those 4,343 outfits.
 
-The crawler scripts in `scripts/` can re-fetch or expand the catalog from public sources (mmo-fashion, Altar of Gaming) — see `scripts/*.mjs` headers. They are development tools; the shipped catalog already covers everything they found.
+The crawler scripts in `scripts/` can re-fetch or expand the catalog from public sources
+(mmo-fashion, Altar of Gaming); see the `scripts/*.mjs` headers. They are development
+tools; the shipped catalog already covers everything they found.
 
-## More views
+## Verification
 
-<p align="center">
-  <img src="docs/screenshot-boxes.png" alt="Outfit Boxes view with honest per-box counts, including nested choices marked not in catalog" width="100%">
-</p>
+`scripts/verify.mjs` is a Playwright end-to-end suite with **13 checks**: boot counts,
+the academia box, gallery render, lightbox open and real image, arrow navigation,
+favorite persistence, class filter, missing-image filter, boxes view, compare and the
+wardrobe view. It expects the server on `127.0.0.1:7861` and fails on any console or
+page error.
 
-<p align="center">
-  <img src="docs/screenshot-compare.png" alt="Side-by-side compare view for two outfits" width="100%">
-</p>
+![Terminal: node scripts/verify.mjs against the local server passes all 13 checks, from catalog loads with 4343 outfits, 11 boxes and 4339 imaged, to wardrobe shows favorite, with no console or page errors](docs/presentation/screenshot-verify.png)
+
+```powershell
+node server.mjs
+# in a second shell:
+npm i --no-save playwright-core@1.49.1
+npx playwright@1.49.1 install chromium
+node scripts/verify.mjs
+```
+
+The suite uses an installed Opera GX, Chrome or Edge when it finds one (or the browser named in
+`BDO_WARDROBE_BROWSER`), otherwise the Playwright-managed Chromium. Pass a folder as the
+second argument to keep its screenshots out of the repo:
+`node scripts/verify.mjs http://127.0.0.1:7861 <folder>`.
+
+CI (`.github/workflows/ci.yml`) runs on every push and pull request: JS syntax for every
+entry point, catalog integrity (no duplicate ids, every indexed image on disk), an API
+boot check, the Playwright suite and an image-budget guard.
+
+## How it works
+
+```mermaid
+flowchart LR
+  CAT[("data/catalog.json<br/>4,343 outfits")] --> API["server.mjs<br/>/api/catalog"]
+  IMG[("data/images.json<br/>4,339 images")] --> API
+  API -->|"sibling fallback<br/>+ quality tier"| UI["public/ (vanilla JS)"]
+  FILES["public/assets/images"] --> UI
+  UI --> LS[("localStorage<br/>your wardrobe")]
+  UI -->|"export / import"| JSON["wardrobe.json"]
+```
+
+- **One small server.** `server.mjs` serves `public/` (path-traversal safe) and three JSON endpoints: `/api/health`, `/api/catalog` and `/api/images-state`. A fourth, `POST /api/crawl`, starts the image crawler from the Studio view.
+- **Fallbacks are decided on the server.** When a class has no image, `/api/catalog` borrows a gender-matched sibling's render and records `fallbackFrom`, so the badge can say so.
+- **Your marks stay in your browser.** Favorites, owned and wishlist live in `localStorage` under `bdo-wardrobe`; nothing is sent anywhere.
 
 ## Repository layout
 
@@ -110,30 +168,19 @@ data/
   images.json           image index + quality metadata
 lib/                    fetch / matching helpers used by crawler scripts
 scripts/                catalog builder, crawler, E2E verify harness
+presets/                26 character customization presets
 docs/                   real UI screenshots
+docs/presentation/      README cover and proof images
 docs/images/logo.svg    README mark
 ```
-
-## Verification
-
-`scripts/verify.mjs` is a Playwright end-to-end suite (**13 checks**: boot counts, search, filters, lightbox navigation, favorites persistence, badge honesty, fallback labels, compare, wardrobe). It expects the server running on `127.0.0.1:7861`.
-
-```powershell
-node server.mjs
-npm ci
-npx playwright install chromium
-node scripts/verify.mjs
-```
-
-CI (`.github/workflows/ci.yml`) runs the suite on every push and pull request: JS syntax, catalog integrity, API boot, Playwright, and an image-budget guard.
 
 ## Honest status
 
 Verified in this tree:
 
-- `data/catalog.json` — 4,343 outfits, 32 classes, 11 boxes
-- `data/images.json` — 4,339 indexed images
-- real UI screenshots under `docs/`
+- `data/catalog.json`: 4,343 outfits, 32 classes, 11 boxes
+- `data/images.json`: 4,339 indexed images
+- real UI screenshots under `docs/` and `docs/presentation/`, taken from the app served locally
 - CI workflow `.github/workflows/ci.yml`
 - latest GitHub release **v1.0.0**
 
@@ -141,12 +188,17 @@ Not claimed:
 
 - affiliation with Pearl Abyss
 - that `package.json` version `2.0.0` is a GitHub release (it is not; v1.0.0 is the latest tag)
-- that every class has a unique official render for every outfit (fallbacks and missing images are labeled on purpose)
+- that every class has a unique official render for every outfit (fallbacks and missing images are labelled on purpose)
+- a phone layout (see the phone-viewport screenshot above)
 
 ## Data sources and credits
 
-Outfit data compiled from public community sources: [mmo-fashion.com](https://mmo-fashion.com) and [altarofgaming.com](https://altarofgaming.com), plus official Pearl Shop announcement renders. All outfit names/descriptions and Black Desert Online are © **Pearl Abyss Corp.** This is an unofficial fan tool; no game assets are redistributed — previews are screenshots/renders as permitted by Pearl Abyss' fan-content policy.
+Outfit data compiled from public community sources: [mmo-fashion.com](https://mmo-fashion.com)
+and [altarofgaming.com](https://altarofgaming.com), plus official Pearl Shop announcement
+renders. All outfit names/descriptions and Black Desert Online are © **Pearl Abyss Corp.**
+This is an unofficial fan tool; no game assets are redistributed. Previews are
+screenshots/renders as permitted by Pearl Abyss' fan-content policy.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE), with the data notice at the end of that file.

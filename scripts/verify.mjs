@@ -10,7 +10,7 @@ mkdirSync(shotDir, { recursive: true });
 
 const CANDIDATES = [
   process.env.BDO_WARDROBE_BROWSER,
-  'C:/Users/karlo/AppData/Local/Programs/Opera GX/opera.exe',
+  process.env.LOCALAPPDATA && `${process.env.LOCALAPPDATA}/Programs/Opera GX/opera.exe`,
   'C:/Program Files/Google/Chrome/Application/chrome.exe',
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
 ].filter(Boolean);
