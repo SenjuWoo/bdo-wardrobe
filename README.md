@@ -39,10 +39,13 @@ cloned.
 <details>
 <summary>On a phone-sized viewport (390x844)</summary>
 
-![BDO Wardrobe at a 390x844 phone viewport: left, the top of the page with the class chips and filters stacked above the gallery and the navigation running off the right edge; right, the single-column card list further down, starting with BD9 Outfit Set labelled FALLBACK: ARCHER](docs/presentation/screenshot-mobile.png)
+![BDO Wardrobe at a 390x844 phone viewport: left, the brand and search on one row, the navigation as a scrollable row below, the filters with one-line scrollable chip rows, and the first card, BD9 Outfit Set, already on the first screen; right, the lightbox opened by tapping that card, labelled FALLBACK: ARCHER with the Favorite, Owned, Wishlist and Compare buttons](docs/presentation/screenshot-mobile.png)
 
-The layout was built for a desktop window. On a phone the filters stack above the
-cards and the top navigation is wider than the screen.
+Below 960 px the top bar wraps (the navigation scrolls sideways instead of widening the
+page); below 760 px the filter chips scroll in one row so the first cards show on the
+first screen; on touch screens the card buttons stay visible. Every view fits from 390
+px up. The verify suite checks that the page is exactly 390 px wide, that tapping a card
+opens the lightbox, and that an 820 px tablet width has no horizontal scroll.
 
 </details>
 
@@ -115,13 +118,18 @@ tools; the shipped catalog already covers everything they found.
 
 ## Verification
 
-`scripts/verify.mjs` is a Playwright end-to-end suite with **13 checks**: boot counts,
+`scripts/verify.mjs` is a Playwright end-to-end suite with **20 checks**: boot counts,
 the academia box, gallery render, lightbox open and real image, arrow navigation,
 favorite persistence, class filter, missing-image filter, boxes view, compare and the
-wardrobe view. It expects the server on `127.0.0.1:7861` and fails on any console or
-page error.
+wardrobe view; four request-guard checks (a foreign `Origin` and a foreign `Host` get
+HTTP 403 and start nothing, GET routes are unchanged, a same-origin crawl request from
+the app page still starts the crawler with its options); two phone checks at 390x844
+(no horizontal scroll, a card tap opens the lightbox) and one at an 820 px tablet width. The guard checks run a
+second server on a free port whose crawler is a stub that only records its arguments,
+so no real crawl starts. It expects the server on `127.0.0.1:7861` and fails on any
+console or page error.
 
-![Terminal: node scripts/verify.mjs against the local server passes all 13 checks, from catalog loads with 4343 outfits, 11 boxes and 4339 imaged, to wardrobe shows favorite, with no console or page errors](docs/presentation/screenshot-verify.png)
+![Terminal: node scripts/verify.mjs against the local server passes all 20 checks, from catalog loads with 4343 outfits, 11 boxes and 4339 imaged, through the four guard checks with HTTP 403 for a foreign Origin and Host, to the phone and tablet layout checks, with no console or page errors](docs/presentation/screenshot-verify.png)
 
 ```powershell
 node server.mjs
@@ -152,7 +160,7 @@ flowchart LR
   UI -->|"export / import"| JSON["wardrobe.json"]
 ```
 
-- **One small server.** `server.mjs` serves `public/` (path-traversal safe) and three JSON endpoints: `/api/health`, `/api/catalog` and `/api/images-state`. A fourth, `POST /api/crawl`, starts the image crawler from the Studio view.
+- **One small server.** `server.mjs` serves `public/` (path-traversal safe) and three JSON endpoints: `/api/health`, `/api/catalog` and `/api/images-state`. A fourth, `POST /api/crawl`, starts the image crawler from the Studio view. Every non-GET request must carry the server's own loopback `Host` (`127.0.0.1`, `localhost` or `[::1]` with its port, or the `HOST` you set) and, when sent, a same-origin `Origin`; anything else gets HTTP 403, so another web page open in your browser cannot start the crawler (cross-site request or DNS rebinding).
 - **Fallbacks are decided on the server.** When a class has no image, `/api/catalog` borrows a gender-matched sibling's render and records `fallbackFrom`, so the badge can say so.
 - **Your marks stay in your browser.** Favorites, owned and wishlist live in `localStorage` under `bdo-wardrobe`; nothing is sent anywhere.
 
@@ -182,6 +190,7 @@ Verified in this tree:
 - `data/images.json`: 4,339 indexed images
 - real UI screenshots under `docs/` and `docs/presentation/`, taken from the app served locally
 - CI workflow `.github/workflows/ci.yml`
+- the 390x844 phone layout and the request guard, both covered by `scripts/verify.mjs`
 - latest GitHub release **v1.0.0**
 
 Not claimed:
@@ -189,7 +198,6 @@ Not claimed:
 - affiliation with Pearl Abyss
 - that `package.json` version `2.0.0` is a GitHub release (it is not; v1.0.0 is the latest tag)
 - that every class has a unique official render for every outfit (fallbacks and missing images are labelled on purpose)
-- a phone layout (see the phone-viewport screenshot above)
 
 ## Data sources and credits
 

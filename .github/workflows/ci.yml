@@ -59,7 +59,7 @@ jobs:
           npm i --no-save playwright-core@1.49.1
           npx playwright@1.49.1 install --with-deps chromium
 
-      - name: E2E verify suite (13 checks)
+      - name: E2E verify suite (20 checks)
         run: node scripts/verify.mjs
 
       - name: Image budget check

@@ -4,6 +4,32 @@ All notable changes to BDO Wardrobe. Versions follow the GitHub release tags.
 
 ## [Unreleased]
 
+These fixes change shipped files; they reach desktop users with the next release zip.
+
+### Fixed
+- **Security:** `POST /api/crawl` accepted requests from any web page open in the
+  browser, so a cross-site request or a DNS-rebinding page could start the image
+  crawler. Every non-GET request now needs the server's own loopback `Host` and, when
+  sent, a same-origin `Origin`; anything else gets HTTP 403. GET routes are unchanged.
+- Studio "Re-crawl all" never re-crawled everything: the server read the request body
+  with `fs.readFile`, which throws on a request stream, so every crawl option was
+  dropped silently. The body is now read properly (4 KB cap) and `all`, `box` and
+  `limit` are validated before they reach the crawler.
+- Phone layout: at 390 px the top bar made the page 935 px wide, the page rendered
+  zoomed out and taps on cards landed on the filters panel (the same overflow hit any
+  window from 761 to 934 px). Below 960 px the top bar wraps with a sideways-scrolling
+  navigation row; below 760 px filter chips scroll in one row; on touch screens card
+  buttons stay visible. Every view now fits from 390 px up; the desktop layout is
+  unchanged.
+
+### Added
+- `scripts/verify.mjs` grows from 13 to 20 checks: a foreign `Origin` and a foreign
+  `Host` get 403 without starting the crawler, GET is unchanged, a same-origin crawl
+  from the app page still starts it with its options (against a stub crawler, so CI
+  never crawls), at 390x844 the page has no horizontal scroll and a card tap opens
+  the lightbox, and an 820 px width has no horizontal scroll. `BDO_WARDROBE_CRAWL_SCRIPT` overrides the crawler path for that test.
+- Phone and verify screenshots in `docs/presentation/` refreshed from the fixed app.
+
 ### Changed
 - README rebuilt around a cover image and real screenshots of the app served locally
   (desktop gallery, lightbox and a phone-sized viewport) plus a captured run of the

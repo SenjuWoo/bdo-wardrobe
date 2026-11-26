@@ -192,3 +192,36 @@ select {
   .lb-stage { flex-direction: column; overflow-y: auto; }
   .lb-info { width: 100%; }
 }
+
+/* Narrow windows, tablets and phones: the topbar must fit the screen. Unwrapped
+   it needs ~935 px; a topbar wider than the viewport widens the layout viewport,
+   the page renders zoomed out and taps land on the filters panel instead of the
+   cards. Brand + search share row one; the nav becomes its own scrollable row. */
+@media (max-width: 960px) {
+  .topbar { flex-wrap: wrap; gap: 8px 12px; padding: 8px 12px; }
+  .topbar-search { flex: 1 1 140px; min-width: 0; }
+  .topbar-search input { width: 100%; }
+  .nav {
+    order: 3; flex: 1 1 100%; min-width: 0;
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-btn { flex-shrink: 0; white-space: nowrap; padding: 6px 10px; }
+}
+
+/* Phones. */
+@media (max-width: 760px) {
+  main { padding: 12px 12px 32px; }
+  /* Filter chips scroll sideways in one row so the panel stays short and the
+     first cards show on the first screen instead of after a wall of chips. */
+  .filters { gap: 12px; padding: 12px; }
+  .filters .chip-row { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .filters .chip-row::-webkit-scrollbar { display: none; }
+  .filters .chip { flex-shrink: 0; white-space: nowrap; }
+  .lb-info { max-height: none; }
+}
+
+/* Touch screens have no hover: keep the card buttons visible. */
+@media (hover: none) {
+  .card-actions { opacity: 1; }
+}

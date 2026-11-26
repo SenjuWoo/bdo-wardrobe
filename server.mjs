@@ -10,7 +10,8 @@ const publicDir = path.join(resourcesDir, 'public');
 const dataDir = path.join(resourcesDir, 'data');
 const catalogPath = process.env.BDO_WARDROBE_CATALOG || path.join(dataDir, 'catalog.json');
 const imagesStatePath = path.join(dataDir, 'images.json');
-const crawlScript = path.join(resourcesDir, 'scripts', 'crawl-images.mjs');
+// BDO_WARDROBE_CRAWL_SCRIPT lets the verify suite swap in a stub (same pattern as BDO_WARDROBE_CATALOG).
+const crawlScript = process.env.BDO_WARDROBE_CRAWL_SCRIPT || path.join(resourcesDir, 'scripts', 'crawl-images.mjs');
 
 const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
@@ -34,6 +35,43 @@ function startCrawl(args = []) {
   return { ok: true, pid: crawlProc.pid };
 }
 
+// Request guard for every non-GET route. The server only listens on loopback,
+// but any web page open in the user's browser can still send a request to it:
+// a cross-site form/fetch carries a foreign Origin, and a DNS-rebinding page
+// carries a foreign Host. Either one is refused, so only the app's own page
+// (and local tools that send the real Host and no Origin) can start the crawler.
+const LOOPBACK_NAMES = new Set(['127.0.0.1', 'localhost', '[::1]']);
+function allowedHosts(host, port) {
+  const names = new Set(LOOPBACK_NAMES);
+  // A non-wildcard HOST (e.g. a LAN address chosen by the user) is also its own name.
+  if (host && host !== '0.0.0.0' && host !== '::') names.add(host.includes(':') && !host.startsWith('[') ? `[${host}]` : host);
+  const out = new Set([...names].map(n => `${n}:${port}`.toLowerCase()));
+  if (Number(port) === 80) for (const n of names) out.add(n.toLowerCase()); // browsers omit the default port
+  return out;
+}
+function isTrustedRequest(headers, host, port) {
+  const hostHeader = String(headers.host || '').toLowerCase();
+  const allowed = allowedHosts(host, port);
+  if (!allowed.has(hostHeader)) return false;
+  const origin = headers.origin;
+  if (origin === undefined) return true; // non-browser client: Host check above is the guard
+  return String(origin).toLowerCase() === `http://${hostHeader}`;
+}
+
+// Bounded request body reader (crawl options are a few bytes of JSON).
+function readBody(req, limit = 4096) {
+  return new Promise((resolve, reject) => {
+    let size = 0; const chunks = [];
+    req.on('data', c => {
+      size += c.length;
+      if (size > limit) { reject(Object.assign(new Error('Request body too large'), { status: 413 })); req.destroy(); return; }
+      chunks.push(c);
+    });
+    req.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+    req.on('error', reject);
+  });
+}
+
 function json(res, code, value) {
   const body = JSON.stringify(value);
   res.writeHead(code, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' });
@@ -43,6 +81,10 @@ function json(res, code, value) {
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, 'http://127.0.0.1');
   try {
+    if (req.method !== 'GET' && req.method !== 'HEAD' && !isTrustedRequest(req.headers, host, server.address().port)) {
+      return json(res, 403, { ok: false, error: 'Forbidden: request did not come from this app' });
+    }
+
     if (url.pathname === '/api/health') return json(res, 200, { ok: true, app: 'bdo-wardrobe', version: '1.0.0' });
 
     if (url.pathname === '/api/catalog') {
@@ -89,12 +131,15 @@ const server = createServer(async (req, res) => {
     }
 
     if (url.pathname === '/api/crawl' && req.method === 'POST') {
+      // Previously read with fs readFile(req), which throws on a stream, so every
+      // option (including "Re-crawl all") was silently dropped.
       let body = {};
-      try { body = JSON.parse(await readFile(req, 'utf8') || '{}'); } catch {}
+      try { body = JSON.parse((await readBody(req)) || '{}') || {}; }
+      catch (error) { if (error.status === 413) return json(res, 413, { ok: false, error: error.message }); }
       const args = [];
-      if (body.all) args.push('--all');
-      if (body.box) args.push(`--box=${body.box}`);
-      if (body.limit) args.push(`--limit=${body.limit}`);
+      if (body.all === true) args.push('--all');
+      if (typeof body.box === 'string' && /^[\w-]{1,64}$/.test(body.box)) args.push(`--box=${body.box}`);
+      if (Number.isInteger(body.limit) && body.limit > 0) args.push(`--limit=${body.limit}`);
       return json(res, 200, startCrawl(args));
     }
 
